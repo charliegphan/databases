@@ -3,7 +3,7 @@ var db = require('../db').dbConnection;
 var convertToReadable = function(arr) {
   return arr.map((mySqlObj => {
     return {
-      username: mySqlObj.userId,
+      username: mySqlObj.username,
       text: mySqlObj.tweet,
       roomname: mySqlObj.roomname,
       objectId: mySqlObj.id
@@ -14,8 +14,15 @@ var convertToReadable = function(arr) {
 module.exports = {
   messages: {
     get: function (cb) {
-      db.query('SELECT * FROM messages', function(error, results, fields) {
-        console.log(results);
+      var q = `select messages.tweet, messages.roomname, users.username
+              from
+              messages
+              join users
+              on
+              messages.userId = users.id;`;
+      // SELECT * FROM messages
+      // 
+      db.query(q, function(error, results, fields) {
         if (error) {
           throw error;
         } else {

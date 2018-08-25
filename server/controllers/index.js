@@ -5,6 +5,7 @@ module.exports = {
     get: function (req, res) {
       models.messages.get((err, results) => {
         res.status(200).json(results);
+        res.end();
       });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
