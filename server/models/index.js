@@ -1,5 +1,16 @@
 var db = require('../db').dbConnection;
 
+var convertToReadable = function(arr) {
+  return arr.map((mySqlObj => {
+    return {
+      username: mySqlObj.username,
+      text: mySqlObj.tweet,
+      roomname: mySqlObj.roomname,
+      objectId: mySqlObj.id
+    };
+  }));
+};
+
 module.exports = {
   messages: {
     get: function (cb) {
@@ -7,7 +18,8 @@ module.exports = {
         if (error) {
           throw error;
         } else {
-          cb(error, results);
+          var newResults = convertToReadable(results);
+          cb(error, {results: newResults});
         }
       });
 
@@ -22,11 +34,12 @@ module.exports = {
       });
     } // a function which can be used to insert a message into the database
   },
-
   users: {
     // Ditto as above.
     get: function () {},
     post: function () {}
   }
 };
+
+
 
