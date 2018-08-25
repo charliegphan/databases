@@ -17,7 +17,9 @@ module.exports = {
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
+    get: function (req, res) {
+      
+    },
     post: function (req, res) {
       models.users.post(req.body, (err, results)=> {
         res.status(201).json(results);
