@@ -25,11 +25,14 @@ module.exports = {
 
     }, // a function which produces all the messages
     post: function (data, cb) {
-      console.log(data);
+      console.log(data, 'hi');
+      // query users for their id
+      // post message to messages with user id
       var q = `INSERT INTO messages 
-              (username, tweet, roomname)
-              VALUES 
+              (userId, tweet, roomname)
+              VALUES  
               ('${data.username}', '${data.text}', '${data.roomname}')`;
+              // fix
       db.query(q, {}, function(error, results, field) {
         if (error) {
           throw error;
@@ -41,8 +44,22 @@ module.exports = {
   },
   users: {
     // Ditto as above.
-    get: function () {},
-    post: function () {}
+    get: function () {
+    },
+
+    post: function (data, cb) {
+      var q = `INSERT INTO users 
+                (username)
+                VALUES 
+                ('${data.username}')`;
+      db.query(q, function(error, results, field) {
+        if (error) {
+          throw error;
+        } else {
+          cb(error, results);
+        }
+      });
+    }
   }
 };
 
