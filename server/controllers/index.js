@@ -7,7 +7,12 @@ module.exports = {
         res.status(200).json(results);
       });
     }, // a function which handles a get request for all messages
-    post: function (req, res) {} // a function which handles posting a message to the database
+    post: function (req, res) {
+      models.messages.post(req.body, (err, results) => {
+        res.status(201).json(results);
+      });
+
+    } // a function which handles posting a message to the database
   },
 
   users: {

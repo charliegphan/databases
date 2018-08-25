@@ -24,12 +24,17 @@ module.exports = {
       });
 
     }, // a function which produces all the messages
-    post: function () {
-      db.query('INSERT INTO messages SET ?', {}, function(error, results, field) {
+    post: function (data, cb) {
+      console.log(data);
+      var q = `INSERT INTO messages 
+              (username, tweet, roomname)
+              VALUES 
+              ('${data.username}', '${data.text}', '${data.roomname}')`;
+      db.query(q, {}, function(error, results, field) {
         if (error) {
           throw error;
         } else {
-          console.log(results.id);
+          cb(error, results);
         }
       });
     } // a function which can be used to insert a message into the database
