@@ -25,21 +25,29 @@ module.exports = {
 
     }, // a function which produces all the messages
     post: function (data, cb) {
-      console.log(data, 'hi');
-      // query users for their id
-      // post message to messages with user id
-      var q = `INSERT INTO messages 
-              (userId, tweet, roomname)
-              VALUES  
-              ('${data.username}', '${data.text}', '${data.roomname}')`;
-              // fix
-      db.query(q, {}, function(error, results, field) {
-        if (error) {
-          throw error;
-        } else {
-          cb(error, results);
-        }
+      var q1 = `SELECT id FROM users WHERE username = '${data.username}'`;
+      var id = new Promise((resolve, reject) => {
+        db.query(q1, function(error, results) {
+          if (error) {
+            reject(error);
+          }
+          resolve(results);
+        });
+      }).then((id) => {
+        var q = `INSERT INTO messages 
+                (userId, tweet, roomname)
+                VALUES  
+                ('${id[0].id}', '${data.message}', '${data.roomname}')`;
+
+        db.query(q, function(error, results, field) {
+          if (error) {
+            throw error;
+          } else {
+            cb(error, results);
+          }
+        });
       });
+
     } // a function which can be used to insert a message into the database
   },
   users: {
@@ -48,7 +56,7 @@ module.exports = {
     },
 
     post: function (data, cb) {
-      var q = `INSERT INTO users 
+      var q = `INSERT IGNORE INTO users 
                 (username)
                 VALUES 
                 ('${data.username}')`;

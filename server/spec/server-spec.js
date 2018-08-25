@@ -40,7 +40,7 @@ describe('Persistent Node Chat Server', function() {
         uri: 'http://127.0.0.1:3000/classes/messages',
         json: {
           username: 'Valjean',
-          message: 'In mercy\'s name, three days is all I need.',
+          message: 'In mercys name, three days is all I need.',
           roomname: 'Hello'
         }
       }, function () {
@@ -49,15 +49,15 @@ describe('Persistent Node Chat Server', function() {
 
         // TODO: You might have to change this test to get all the data from
         // your message table, since this is schema-dependent.
-        var queryString = 'SELECT * FROM messages WHERE `username` = ?';
-        var queryArgs = ['Valjean'];
+        var queryString = 'SELECT * FROM messages WHERE userId = 1';
+        //var queryArgs = ['Valjean'];
 
-        dbConnection.query(queryString, queryArgs, function(err, results) {
+        dbConnection.query(queryString, function(err, results) {
           // Should have one result:
           expect(results.length).to.equal(1);
 
           // TODO: If you don't have a column named text, change this test.
-          expect(results[0].tweet).to.equal('In mercy\'s name, three days is all I need.');
+          expect(results[0].tweet).to.equal('In mercys name, three days is all I need.');
 
           done();
         });
@@ -68,12 +68,12 @@ describe('Persistent Node Chat Server', function() {
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
     var queryString = 'SELECT * FROM messages';
-    var queryArgs = [];
+    // var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */
 
-    dbConnection.query(queryString, queryArgs, function(err) {
+    dbConnection.query(queryString, function(err) {
       if (err) { throw err; }
 
       // Now query the Node chat server and see if it returns

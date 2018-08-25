@@ -4,8 +4,8 @@ USE chat;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT,
-  username VARCHAR(255),
-  PRIMARY KEY (id)
+  username VARCHAR(255) UNIQUE,
+  PRIMARY KEY (id, username)
 );
 
 CREATE TABLE messages (
